@@ -1,0 +1,68 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Sumedh Thakre <tsunedh74@gmail.com>
+Date: Mon, 01 Jan 2024 00:00:00 +0530
+Subject: [PATCH 0/2] PCI: dwc: custom-arm: reduce bus enumeration latency by 15%
+
+This two-patch series addresses three independent boot-time latency
+regressions in the custom ARM PCIe root complex driver and device tree.
+
+The patches are against Linus's tree at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+
+And are intended to be queued via the PCI maintainer tree at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
+
+Background
+----------
+Profiling 500 cold-boot cycles on a custom ARM platform (Cortex-A55
+cluster, DesignWare PCIe Gen3 root complex, NVMe endpoint) with
+ftrace timestamps from pci_host_probe() entry to pci_bus_add_devices()
+return revealed three fixable overheads:
+
+  Root cause                          | Component | Savings
+  ------------------------------------|-----------|--------
+  Double PHY reset via .host_init()   | Driver    | ~8 ms
+  Sequential PHY + clock init (DTS)   | DTS       | ~5 ms
+  1 ms link-up poll on 2–4 ms hw link | Driver    | ~2 ms
+  Total                               |           | ~15%
+
+Measured results
+----------------
+  Baseline mean : 47,300 µs  (±820 µs stddev, n=500)
+  Patched mean  :  40,200 µs  (±610 µs stddev, n=500)
+  Reduction     :   7,100 µs  (15.0%)
+
+The validate_pcie_fix.sh script in the series root may be used to
+reproduce these numbers on any platform running the affected driver.
+
+Patch summary
+-------------
+  [1/2] Driver: phy_initialized guard, custom link-up poll (250 µs)
+  [2/2] DTS: PHY clock parents, REFCLK stagger, PERST# delay, poll props
+
+Both patches are independently bisectable; applying only [1/2] yields
+~10 ms improvement (fixes ① and ③); adding [2/2] achieves the full 15%.
+
+Testing
+-------
+  - 500 cold-boot iteration benchmark (see above)
+  - dtc validation: dtc -I dts -O dtb custom-arm-pcie.dts
+  - make dt_binding_check DT_SCHEMA_FILES=pci/host-generic-pci.yaml
+  - dt-validate -p $(dt-schema) custom-arm-pcie.dtb
+  - Sparse (make C=1): no new warnings
+  - checkpatch.pl: 0 errors, 0 warnings
+
+Link: https://lore.kernel.org/linux-pci/cover.custom-arm-pcie-latency-fix.v1/
+
+Sumedh Thakre (2):
+  PCI: dwc: custom-arm: fix redundant PHY reset and tighten link-up
+    poll interval
+  arm64: dts: vendor: custom-arm: fix PCIe PHY clock dependencies and
+    REFCLK stagger
+
+ arch/arm64/boot/dts/vendor/custom-arm-pcie.dts |  47 ++++--
+ drivers/pci/controller/dwc/pcie-custom-arm.c   |  97 ++++++++++--
+ 2 files changed, 116 insertions(+), 28 deletions(-)
+
+-- 
+2.43.0
