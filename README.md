@@ -1,14 +1,5 @@
 # linux-pcie-custom-arm-latency-fix
 
-**Upstream Linux kernel patch series: PCIe root complex boot-time optimization**
-
-> Reduces PCIe bus enumeration latency by **15%** on custom ARM platforms  
-> Reviewed-by: Lorenzo Pieralisi \<lpieralisi@kernel.org\>  
-> Acked-by: Bjorn Helgaas \<bhelgaas@google.com\>  
-> Merged into: [git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git](https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git)
-
----
-
 ## Author
 
 **Sumedh Thakre** \<tsunedh74@gmail.com\>  
