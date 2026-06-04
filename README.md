@@ -56,32 +56,6 @@ linux-pcie-custom-arm-latency-fix/
     └── validate_pcie_fix.sh
 ```
 
----
-
-## Applying the Patches
-
-### Against Bjorn Helgaas's PCI tree (intended target)
-
-```bash
-# Clone the maintainer tree
-git clone git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
-cd pci
-
-# Apply the series
-git am 0000-cover-letter.patch \
-       0001-PCI-dwc-custom-arm-fix-redundant-PHY-reset-and-poll-interval.patch \
-       0002-arm64-dts-vendor-custom-arm-fix-PCIe-PHY-clock-deps-and-REFCLK-stagger.patch
-```
-
-### Against Linus's tree
-
-```bash
-git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-cd linux
-git am /path/to/0001*.patch /path/to/0002*.patch
-```
-
----
 
 ## Fix Details
 
