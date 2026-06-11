@@ -33,8 +33,6 @@ No functional change to drivers other than enabling parallel probe
 and providing the REFCLK stabilisation margin required by hardware.
 
 Signed-off-by: Sumedh Thakre <tsunedh74@gmail.com>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
  arch/arm64/boot/dts/vendor/custom-arm-pcie.dts | 47 ++++++++++++++++--
  1 file changed, 43 insertions(+), 4 deletions(-)
