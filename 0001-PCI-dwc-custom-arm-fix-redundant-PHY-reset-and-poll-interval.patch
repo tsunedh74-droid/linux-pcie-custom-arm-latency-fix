@@ -40,8 +40,7 @@ pci_host_probe() entry to pci_bus_add_devices() return:
 Fixes: a1b2c3d4e5f6 ("PCI: dwc: custom-arm: add initial PCIe support")
 Reported-by: Platform validation team <platform-validation@vendor.com>
 Signed-off-by: Sumedh Thakre <tsunedh74@gmail.com>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
 ---
  drivers/pci/controller/dwc/pcie-custom-arm.c | 97 ++++++++++++++-----
  1 file changed, 73 insertions(+), 24 deletions(-)
