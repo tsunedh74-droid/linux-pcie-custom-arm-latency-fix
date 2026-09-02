@@ -6,7 +6,7 @@
  * reducing PCIe bus enumeration latency by 15% on custom ARM platforms.
  *
  * Copyright (C) 2024 Sumedh Thakre <tsunedh74@gmail.com>
- *
+ */
 
 
 #include <linux/clk.h>
