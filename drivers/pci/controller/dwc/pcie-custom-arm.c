@@ -7,9 +7,7 @@
  *
  * Copyright (C) 2024 Sumedh Thakre <tsunedh74@gmail.com>
  *
- * Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
- * Acked-by:    Bjorn Helgaas <bhelgaas@google.com>
- */
+
 
 #include <linux/clk.h>
 #include <linux/delay.h>
